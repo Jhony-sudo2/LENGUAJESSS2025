@@ -88,10 +88,11 @@ public class Lexer {
 
   private static final String ZZ_CMAP_BLOCKS_PACKED_0 =
     "\11\0\1\1\1\2\1\3\1\1\1\4\16\0\4\3"+
-    "\1\1\3\3\1\5\11\3\1\6\1\3\1\7\11\10"+
-    "\7\3\32\5\4\3\1\5\1\3\1\5\1\11\1\12"+
-    "\1\5\1\13\3\5\1\14\4\5\1\15\1\16\2\5"+
-    "\1\17\1\20\1\21\6\5\4\3\41\0\2\3\4\5"+
+    "\1\1\3\3\1\5\5\3\1\6\1\7\1\3\1\10"+
+    "\1\11\1\12\1\13\11\14\1\3\1\15\1\3\1\16"+
+    "\3\3\32\5\4\3\1\5\1\3\1\5\1\17\1\20"+
+    "\1\5\1\21\3\5\1\22\4\5\1\23\1\24\2\5"+
+    "\1\25\1\26\1\27\6\5\4\3\41\0\2\3\4\5"+
     "\4\3\1\5\2\3\1\0\7\3\1\5\4\3\1\5"+
     "\5\3\27\5\1\3\37\5\1\3\u01ca\5\4\3\14\5"+
     "\16\3\5\5\7\3\1\5\1\3\1\5\21\3\160\0"+
@@ -349,11 +350,12 @@ public class Lexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\1\2\2\3\1\4\1\1\2\5\1\4"+
-    "\1\6\3\7\2\4\1\7\6\4\1\10\2\4\1\11";
+    "\1\0\1\1\1\2\2\3\1\4\1\5\1\6\1\7"+
+    "\1\1\1\10\2\11\1\12\1\13\1\4\1\14\1\0"+
+    "\10\4\1\15\2\4\1\16";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[27];
+    int [] result = new int[30];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -378,13 +380,13 @@ public class Lexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\22\0\22\0\22\0\44\0\66\0\110\0\132"+
-    "\0\154\0\176\0\110\0\22\0\220\0\242\0\264\0\306"+
-    "\0\330\0\352\0\374\0\u010e\0\u0120\0\u0132\0\u0144\0\66"+
-    "\0\u0156\0\u0168\0\66";
+    "\0\0\0\30\0\30\0\30\0\60\0\110\0\30\0\30"+
+    "\0\30\0\140\0\30\0\170\0\220\0\30\0\30\0\250"+
+    "\0\140\0\140\0\300\0\330\0\360\0\u0108\0\u0120\0\u0138"+
+    "\0\u0150\0\u0168\0\110\0\u0180\0\u0198\0\110";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[27];
+    int [] result = new int[30];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -408,22 +410,24 @@ public class Lexer {
 
   private static final String ZZ_TRANS_PACKED_0 =
     "\1\2\1\3\1\4\1\2\1\5\1\6\1\7\1\10"+
-    "\1\11\2\6\1\12\6\6\24\0\1\4\17\0\1\6"+
-    "\4\0\1\6\1\0\13\6\7\0\2\13\11\0\6\14"+
-    "\1\15\2\16\17\14\1\15\2\11\11\14\1\6\4\0"+
-    "\1\6\1\0\6\6\1\17\2\6\1\20\1\6\7\14"+
-    "\2\13\17\14\1\21\2\16\11\14\1\6\4\0\1\6"+
-    "\1\0\12\6\1\22\1\6\4\0\1\6\1\0\3\6"+
-    "\1\23\7\6\7\14\2\0\11\14\1\6\4\0\1\6"+
-    "\1\0\4\6\1\24\7\6\4\0\1\6\1\0\10\6"+
-    "\1\25\3\6\4\0\1\6\1\0\10\6\1\26\3\6"+
-    "\4\0\1\6\1\0\5\6\1\27\6\6\4\0\1\6"+
-    "\1\0\7\6\1\30\4\6\4\0\1\6\1\0\2\6"+
-    "\1\31\11\6\4\0\1\6\1\0\5\6\1\32\6\6"+
-    "\4\0\1\6\1\0\10\6\1\33\2\6";
+    "\1\11\1\12\1\13\1\14\1\15\1\16\1\17\2\6"+
+    "\1\20\6\6\32\0\1\4\25\0\1\6\4\0\1\6"+
+    "\5\0\2\6\2\0\11\6\13\0\2\21\24\0\1\22"+
+    "\27\0\1\22\1\0\2\15\13\0\1\6\4\0\1\6"+
+    "\5\0\2\6\2\0\4\6\1\23\2\6\1\24\2\6"+
+    "\4\0\1\6\5\0\2\6\2\0\10\6\1\25\1\6"+
+    "\4\0\1\6\5\0\2\6\2\0\1\6\1\26\10\6"+
+    "\4\0\1\6\5\0\2\6\2\0\2\6\1\27\7\6"+
+    "\4\0\1\6\5\0\2\6\2\0\6\6\1\30\3\6"+
+    "\4\0\1\6\5\0\2\6\2\0\6\6\1\31\3\6"+
+    "\4\0\1\6\5\0\2\6\2\0\3\6\1\32\6\6"+
+    "\4\0\1\6\5\0\2\6\2\0\5\6\1\33\4\6"+
+    "\4\0\1\6\5\0\2\6\2\0\1\34\11\6\4\0"+
+    "\1\6\5\0\2\6\2\0\3\6\1\35\6\6\4\0"+
+    "\1\6\5\0\2\6\2\0\6\6\1\36\2\6";
 
   private static int [] zzUnpacktrans() {
-    int [] result = new int[378];
+    int [] result = new int[432];
     int offset = 0;
     offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -466,10 +470,11 @@ public class Lexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\3\11\7\1\1\11\17\1";
+    "\1\0\3\11\2\1\3\11\1\1\1\11\2\1\2\11"+
+    "\2\1\1\0\14\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[27];
+    int [] result = new int[30];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -976,47 +981,72 @@ public class Lexer {
             { System.out.println("CARACTER INVALIDO");
             }
           // fall through
-          case 10: break;
+          case 15: break;
           case 2:
             { /*IGNORAMOS*/
             }
           // fall through
-          case 11: break;
+          case 16: break;
           case 3:
             { /*IGNORARLO*/
             }
           // fall through
-          case 12: break;
+          case 17: break;
           case 4:
             { guardarToken(new Token(TipoToken.ID,yytext(),yyline+1,yycolumn+1));
             }
           // fall through
-          case 13: break;
+          case 18: break;
           case 5:
+            { guardarToken(new Token(TipoToken.POR,yytext(),yyline+1,yycolumn+1));
+            }
+          // fall through
+          case 19: break;
+          case 6:
+            { guardarToken(new Token(TipoToken.MAS,yytext(),yyline+1,yycolumn+1));
+            }
+          // fall through
+          case 20: break;
+          case 7:
+            { guardarToken(new Token(TipoToken.MENOS,yytext(),yyline+1,yycolumn+1));
+            }
+          // fall through
+          case 21: break;
+          case 8:
+            { guardarToken(new Token(TipoToken.DIV,yytext(),yyline+1,yycolumn+1));
+            }
+          // fall through
+          case 22: break;
+          case 9:
             { guardarToken(new Token(TipoToken.NUMERO,yytext(),yyline+1,yycolumn+1));
             }
           // fall through
-          case 14: break;
-          case 6:
+          case 23: break;
+          case 10:
+            { guardarToken(new Token(TipoToken.PCOMA,yytext(),yyline+1,yycolumn+1));
+            }
+          // fall through
+          case 24: break;
+          case 11:
+            { guardarToken(new Token(TipoToken.IGUAL,yytext(),yyline+1,yycolumn+1));
+            }
+          // fall through
+          case 25: break;
+          case 12:
             { guardarToken(new Token(TipoToken.DECIMAL,yytext(),yyline+1,yycolumn+1));
             }
           // fall through
-          case 15: break;
-          case 7:
-            { guardarToken(new Token(TipoToken.ERROR,yytext(),yyline+1,yycolumn+1));
-            }
-          // fall through
-          case 16: break;
-          case 8:
+          case 26: break;
+          case 13:
             { guardarToken(new Token(TipoToken.ENTERO,yytext(),yyline+1,yycolumn+1));
             }
           // fall through
-          case 17: break;
-          case 9:
+          case 27: break;
+          case 14:
             { guardarToken(new Token(TipoToken.ESCRIBIR,yytext(),yyline+1,yycolumn+1));
             }
           // fall through
-          case 18: break;
+          case 28: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }
