@@ -1,19 +1,16 @@
 package com.example.Sintactico;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Stack;
-import com.example.Token.*;;;
+import java.util.*;
+import com.example.Token.*;
 
 public class Parser {
     private final List<Token> tokens;
     private int index = 0;
 
-    // Tabla LL(1)
-    private final Map<String, Map<String, List<String>>> tabla = new HashMap<>();
+    private final String[] noTerminales = {"P", "L", "A", "E", "E'", "T", "T'", "F"};
+    private final String[] terminales = {"ID", "=", "NUMERO", "DECIMAL", "+", "-", "*", "/", ";", "$"};
+
+    private final String[][] tabla = new String[noTerminales.length][terminales.length];
 
     public Parser(List<Token> tokens) {
         this.tokens = tokens;
@@ -21,47 +18,62 @@ public class Parser {
     }
 
     private void inicializarTabla() {
-        // LL(1) Table (P, L, A, E, E', T, T', F)
+        // Inicializar todo con ERROR
+        for (int i = 0; i < noTerminales.length; i++) {
+            Arrays.fill(tabla[i], "ERROR");
+        }
 
-        // P
-        put("P", "ID", Arrays.asList("L"));
-        put("P", "$", Arrays.asList("L"));
+        // P → L
+        set("P", "ID", "L");
+        set("P", "$", "L");
 
-        // L
-        put("L", "ID", Arrays.asList("A", "L"));
-        put("L", "$", Arrays.asList("ε"));
+        // L → A L | ε
+        set("L", "ID", "A L");
+        set("L", "$", "ε");
 
-        // A
-        put("A", "ID", Arrays.asList("ID", "=", "E", ";"));
+        // A → ID = E ;
+        set("A", "ID", "ID = E ;");
 
-        // E
-        for (String t : Arrays.asList("ID", "NUMERO", "DECIMAL"))
-            put("E", t, Arrays.asList("T", "E'"));
+        // E → T E'
+        set("E", "ID", "T E'");
+        set("E", "NUMERO", "T E'");
+        set("E", "DECIMAL", "T E'");
 
-        // E'
-        put("E'", "+", Arrays.asList("+", "T", "E'"));
-        put("E'", "-", Arrays.asList("-", "T", "E'"));
-        put("E'", ";", Arrays.asList("ε"));
+        // E' → + T E' | - T E' | ε
+        set("E'", "+", "+ T E'");
+        set("E'", "-", "- T E'");
+        set("E'", ";", "ε");
 
-        // T
-        for (String t : Arrays.asList("ID", "NUMERO", "DECIMAL"))
-            put("T", t, Arrays.asList("F", "T'"));
+        // T → F T'
+        set("T", "ID", "F T'");
+        set("T", "NUMERO", "F T'");
+        set("T", "DECIMAL", "F T'");
 
-        // T'
-        put("T'", "+", Arrays.asList("ε"));
-        put("T'", "-", Arrays.asList("ε"));
-        put("T'", "*", Arrays.asList("*", "F", "T'"));
-        put("T'", "/", Arrays.asList("/", "F", "T'"));
-        put("T'", ";", Arrays.asList("ε"));
+        // T' → * F T' | / F T' | ε
+        set("T'", "*", "* F T'");
+        set("T'", "/", "/ F T'");
+        set("T'", "+", "ε");
+        set("T'", "-", "ε");
+        set("T'", ";", "ε");
 
-        // F
-        put("F", "ID", Arrays.asList("ID"));
-        put("F", "NUMERO", Arrays.asList("NUMERO"));
-        put("F", "DECIMAL", Arrays.asList("DECIMAL"));
+        // F → ID | NUMERO | DECIMAL
+        set("F", "ID", "ID");
+        set("F", "NUMERO", "NUMERO");
+        set("F", "DECIMAL", "DECIMAL");
     }
 
-    private void put(String noTerminal, String terminal, List<String> produccion) {
-        tabla.computeIfAbsent(noTerminal, k -> new HashMap<>()).put(terminal, produccion);
+    private void set(String noTerminal, String terminal, String produccion) {
+        int i = indexOf(noTerminales, noTerminal);
+        int j = indexOf(terminales, terminal);
+        if (i != -1 && j != -1) {
+            tabla[i][j] = produccion;
+        }
+    }
+
+    private int indexOf(String[] arr, String val) {
+        for (int i = 0; i < arr.length; i++)
+            if (arr[i].equals(val)) return i;
+        return -1;
     }
 
     private String lookahead() {
@@ -91,14 +103,14 @@ public class Parser {
         pila.push("$");
         pila.push("P");
 
-        System.out.printf("%-40s %-25s %-20s%n", "PILA", "ENTRADA", "ACCIÓN");
-        System.out.println("----------------------------------------------------------------------");
+        System.out.printf("%-45s %-20s %-30s%n", "PILA", "ENTRADA", "ACCIÓN");
+        System.out.println("--------------------------------------------------------------------------------------");
 
         while (!pila.isEmpty()) {
             String cima = pila.peek();
             String tokenActual = lookahead();
 
-            System.out.printf("%-40s %-25s ", pila.toString(), tokenActual);
+            System.out.printf("%-45s %-20s ", pila.toString(), tokenActual);
 
             if (esTerminal(cima)) {
                 if (cima.equals(tokenActual)) {
@@ -110,21 +122,29 @@ public class Parser {
                     return false;
                 }
             } else {
-                Map<String, List<String>> fila = tabla.get(cima);
-                if (fila == null || !fila.containsKey(tokenActual)) {
+                int i = indexOf(noTerminales, cima);
+                int j = indexOf(terminales, tokenActual);
+                if (i == -1 || j == -1) {
+                    System.out.println(" Error: símbolo no reconocido");
+                    return false;
+                }
+
+                String produccion = tabla[i][j];
+                if (produccion.equals("ERROR")) {
                     System.out.println("Error: no hay regla para [" + cima + ", " + tokenActual + "]");
                     return false;
                 }
 
-                List<String> produccion = fila.get(tokenActual);
                 pila.pop();
 
-                if (!produccion.get(0).equals("ε")) {
-                    ListIterator<String> it = produccion.listIterator(produccion.size());
-                    while (it.hasPrevious()) pila.push(it.previous());
+                if (!produccion.equals("ε")) {
+                    String[] simbolos = produccion.trim().split("\\s+");
+                    for (int k = simbolos.length - 1; k >= 0; k--) {
+                        pila.push(simbolos[k]);
+                    }
                 }
 
-                System.out.println(cima + " -> " + String.join(" ", produccion));
+                System.out.println(cima + " -> " + produccion);
             }
         }
 
@@ -133,9 +153,6 @@ public class Parser {
     }
 
     private boolean esTerminal(String simbolo) {
-        return switch (simbolo) {
-            case "ID", "=", "NUMERO", "DECIMAL", "+", "-", "*", "/", ";", "$" -> true;
-            default -> false;
-        };
+        return Arrays.asList("ID", "=", "NUMERO", "DECIMAL", "+", "-", "*", "/", ";", "$").contains(simbolo);
     }
 }
